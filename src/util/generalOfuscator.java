@@ -2,10 +2,22 @@ package util;
 
 public interface generalOfuscator {
 
+	
 	/**
-	 * 텍스트 scanning
+	 * Ofuscate 할 메인 run
+	 * @param path uploaded file path
+	 * @return complete 시 true 반환
 	 */
-	void scanning();
+	boolean run(String path);
+	
+	
+	/**
+	 * text Scanning
+	 * 
+	 * @param path uploaded file path
+	 * @return scanning 및 토큰화 성공시 true
+	 */
+	boolean scanning(String path);
 	
 
 	
