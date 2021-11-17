@@ -1,5 +1,7 @@
 package util;
 
+import java.nio.file.Path;
+
 public interface generalOfuscator {
 
 	
@@ -11,14 +13,14 @@ public interface generalOfuscator {
 	boolean run(String path);
 	
 	
+	
 	/**
 	 * text Scanning
 	 * 
 	 * @param path uploaded file path
 	 * @return scanning 및 토큰화 성공시 true
 	 */
-	boolean scanning(String path);
-	
+	boolean scanningUsingJStokenizer(String path);
 
 	
 	/**
@@ -29,13 +31,16 @@ public interface generalOfuscator {
 	String readString();
 	
 	/**
-	 * 변수 명을 짧게 압축
+	 * convert set을 변환(zipping)
+	 * 
+	 * @param from 변환 대상 파일
+	 * @param to 결과 파일
 	 */
-	void valueZipping();
+	void valueZipping(Path from, Path to);
 	
 	/**
 	 * 변환기 
 	 */
-	void convert();
+	void getConvertSet();
 	
 }

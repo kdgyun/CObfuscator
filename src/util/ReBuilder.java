@@ -30,6 +30,7 @@ public class ReBuilder {
 		return newFilePath;
 	}
 
+	@Deprecated
 	public static HashMap<String, Integer> ignoredpreProcessorTokens(Path filePath, Path toPath) throws IOException {
 		
 		Path sourceFilePath = filePath;
@@ -65,6 +66,9 @@ public class ReBuilder {
 			
 	}
 	
+
+	
+	@Deprecated
 	private static String getDefinePreprocessing(String line) {
 		StringTokenizer st = new StringTokenizer(line, " |(");
 		String sp = st.nextToken();
