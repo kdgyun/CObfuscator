@@ -8,7 +8,7 @@ public class runner {
 	public static void main(String[] args) throws IOException {
 		if(args == null || args.length == 0) {
 			
-			new cOfuscator().run("src/test/inputFile/main.c", "src/test/outputFile/Obfmain.c", false);
+			new cOfuscator().run("src/test/inputFile/main.c", "src/test/outputFile/Obfmain.c", true);
 		}
 		else if(args.length < 2){
 			if(args[0].equals("-f")) {

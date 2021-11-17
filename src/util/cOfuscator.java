@@ -114,7 +114,8 @@ public class cOfuscator implements generalOfuscator {
 
 	
 	private static final String[] pathSet(Path filePath1, Path filePath2) {
-		Path p = Paths.get(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getParent();
+		Path p = Paths.get(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+		if(p.getFileName().toString().equals("bin")) {p = p.getParent();}
 		return new String[] {p + "/src/run.sh",  filePath1.toString() , filePath2.toString()};
 	}
 	
