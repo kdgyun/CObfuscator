@@ -1,6 +1,9 @@
 package util;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -93,7 +96,7 @@ public class cOfuscator implements generalOfuscator {
 	private static Path taskPath = null;
 	
 	@Override
-	public boolean run(String path) {
+	public boolean run(String path, String resultPath, boolean f) {
 		if (!scanningUsingJStokenizer(path)) {
 			System.out.println("scanningUsingJStokenizer is failed");
 			return false;
@@ -103,33 +106,67 @@ public class cOfuscator implements generalOfuscator {
 			return false;
 		}
 		getConvertSet();
-		valueZipping(taskPath, Paths.get(taskPath.getParent().toString() + "/conv_" + taskPath.getFileName()));
+		valueZipping(taskPath, Paths.get(resultPath), f);
+		new File(taskPath.toString()).deleteOnExit();
+	
 		return true;
 	}
 
 	
 	private static final String[] pathSet(Path filePath1, Path filePath2) {
 		Path p = Paths.get(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getParent();
-		System.out.println("this Path is : " + p);
-		return new String[] {p + "/bin/run.sh",  filePath1.toString() , filePath2.toString()};
+		return new String[] {p + "/src/run.sh",  filePath1.toString() , filePath2.toString()};
 	}
 	
 
 
+	public String getNodePath() {
+		Process proc = null;
+		String output = null;
+		try {
+
+			String[] pah = {"bash","which node"};
+			ProcessBuilder pb = new ProcessBuilder(pah);
+			
+			pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+			pb.redirectError(ProcessBuilder.Redirect.INHERIT);
+			pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
+
+			proc = pb.start();
+			BufferedReader reader = 
+					  new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			output = reader.readLine();
+			proc.waitFor();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} catch (InterruptedException e) {
+			System.out.println("not working");
+			e.printStackTrace();
+			proc.destroy();
+			return null;
+		} finally {
+			
+		
+			proc.destroy();
+			
+		}
+		return output;
+	}
 	public boolean scanningUsingJStokenizer(String path) {
 		Path procFilePath = null;
 
 		procFilePath = Paths.get(path);
-		
 		if (procFilePath == null)
 			return false;
 		Process proc = null;
 		try {
 			taskPath = Paths.get(procFilePath.getParent().toString() + "/task_" + procFilePath.getFileName().toString());
 
-
 			String[] pah = pathSet(procFilePath, taskPath);
 			ProcessBuilder pb = new ProcessBuilder(pah);
+			
 			pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 			pb.redirectError(ProcessBuilder.Redirect.INHERIT);
 			pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
@@ -178,7 +215,7 @@ public class cOfuscator implements generalOfuscator {
 			try {
 				String s1 = type[0];
 				String s2 = type[1];
-			filterMap.put(new TokenStruct(s2, s1), null);
+				filterMap.put(new TokenStruct(s2, s1), null);
 			} catch (ArrayIndexOutOfBoundsException e) {
 				e.printStackTrace();
 				System.out.println("string : " + line);
@@ -197,7 +234,7 @@ public class cOfuscator implements generalOfuscator {
 	}
 
 	@Override
-	public void valueZipping(Path from, Path to) {
+	public void valueZipping(Path from, Path to, boolean f) {
 		Path sourceFilePath = from;
 		Path newFilePath = to;
 		try {
@@ -400,10 +437,13 @@ public class cOfuscator implements generalOfuscator {
 			}
 			
 			// 그냥 sb하나 더 생성해서 따로따로 write?? 
-			
-			Files.writeString(newFilePath, replaceTokenBuilder.append('\n').append(textBuilder), StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
+			if(f) {
+				System.out.println(replaceTokenBuilder.append('\n').append(textBuilder).toString());
+			}
+			else {
+				Files.writeString(newFilePath, replaceTokenBuilder.append('\n').append(textBuilder), StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
 					StandardOpenOption.TRUNCATE_EXISTING);
-			
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -10,7 +10,7 @@ public interface generalOfuscator {
 	 * @param path uploaded file path
 	 * @return complete 시 true 반환
 	 */
-	boolean run(String path);
+	boolean run(String path, String resultPath, boolean f);
 	
 	
 	
@@ -36,7 +36,7 @@ public interface generalOfuscator {
 	 * @param from 변환 대상 파일
 	 * @param to 결과 파일
 	 */
-	void valueZipping(Path from, Path to);
+	void valueZipping(Path from, Path to, boolean f);
 	
 	/**
 	 * 변환기 
