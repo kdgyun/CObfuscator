@@ -1,4 +1,4 @@
-package util;
+package cobf.util;
 
 
 import java.io.IOException;
@@ -11,12 +11,16 @@ import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import cobf.TOKEN.TOKEN;
 
 public class ReBuilder {
 
 	private static final String REGEX = "//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/";
 	private static final String SPACE_REGEX = "//s+";
-	private static final String[] SPECIFIC_STRING_SET = {"include", "define", "undef", "if", "ifdef", "else", "elif", "ifndef", "error", "endif", "pragma", "line"};
+	private static final String[] SPECIFIC_STRING_SET = Stream.of(TOKEN.values()).map(TOKEN::getToken).collect(Collectors.toList()).toArray(String[]::new);
 	private static final String START_SPECIFIC_START = "#";
 	
 	public static Path reBuild(String filePath) throws IOException {

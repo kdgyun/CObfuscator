@@ -1,9 +1,7 @@
-package util;
+package cobf.util;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -18,14 +16,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import cobf.TOKEN.TOKEN;
+import cobf.util.support.Supporter;
 
 
 
-public class cOfuscator implements generalOfuscator {
-	private static final String[] SPECIFIC_STRING_SET = {"include", "define", "undef",
-			"if", "ifdef", "else", "elif", "ifndef", "error", "endif", "pragma", "line" };
+public class cObfuscator implements generalObfuscator {
 
+	
+	private static HashSet<String> SPECIFIC_STRING_HASHSET = new HashSet<String>();
+
+	static {
+		SPECIFIC_STRING_HASHSET.addAll(Stream.of(TOKEN.values()).map(TOKEN::getToken).collect(Collectors.toList()));
+	}
+
+	
 	private static final String SKIP_TYPE1 = "directive";
 	private static final String SKIP_TYPE2 = "whitespace";
 	private static final String SKIP_TYPE3 = "line comment";
@@ -46,19 +54,15 @@ public class cOfuscator implements generalOfuscator {
 	private static final String WHITE_TYPE = "whitespace";
 	private static final String COMMA_TYPE = ",";
 	private static final String SPLITTER = "( afsjevijow42f2f3315fljksf=> )";
-	private static HashSet<String> SPECIFIC_STRING_HASHSET = new HashSet<String>();
-	static {
-		SPECIFIC_STRING_HASHSET.addAll(Arrays.asList(SPECIFIC_STRING_SET));
-	}
-
 
 	
-	int offset = 1;	// convert 되는 padding 값
+	private int offset = 1;	// convert 되는 padding 값
 	
 	private static class TokenStruct {
 		
 		String value;
 		String type;
+		
 		TokenStruct(String value, String type) {
 			this.value = value;
 			this.type = type;
@@ -67,7 +71,6 @@ public class cOfuscator implements generalOfuscator {
 		String getterType() {
 			return this.type;
 		}
-
 		
 		@Override
 		public int hashCode() {
@@ -88,11 +91,11 @@ public class cOfuscator implements generalOfuscator {
 	        }
 	        return false;
 		}
-		
 	}
 				
 	private HashMap<TokenStruct, String> filterMap = new HashMap<TokenStruct, String>(); // <value, TYPE>, converto 
 	private HashMap<String, int[]> convertMap = new HashMap<String, int[]>(); // converto, <value, TYPE> 
+	
 	private static Path taskPath = null;
 	
 	@Override
@@ -113,49 +116,22 @@ public class cOfuscator implements generalOfuscator {
 	}
 
 	
-	private static final String[] pathSet(Path filePath1, Path filePath2) {
+	private String[] pathSet(Path filePath1, Path filePath2) {
 		Path p = Paths.get(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+
 		if(p.getFileName().toString().equals("bin")) {p = p.getParent();}
-		return new String[] {p + "/src/run.sh",  filePath1.toString() , filePath2.toString()};
+		if(!p.getFileName().toString().equals("CObfuscator")) {p = Paths.get(p + "/CObfuscator");}
+		
+		p = Paths.get(getClass().getClassLoader().getResource("cobf/run.sh").getPath());
+		return new String[] {p.toString(),  filePath1.toString() , filePath2.toString()};
+
 	}
 	
 
 
-	public String getNodePath() {
-		Process proc = null;
-		String output = null;
-		try {
 
-			String[] pah = {"bash","which node"};
-			ProcessBuilder pb = new ProcessBuilder(pah);
-			
-			pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-			pb.redirectError(ProcessBuilder.Redirect.INHERIT);
-			pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
-
-			proc = pb.start();
-			BufferedReader reader = 
-					  new BufferedReader(new InputStreamReader(proc.getInputStream()));
-			output = reader.readLine();
-			proc.waitFor();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		} catch (InterruptedException e) {
-			System.out.println("not working");
-			e.printStackTrace();
-			proc.destroy();
-			return null;
-		} finally {
-			
-		
-			proc.destroy();
-			
-		}
-		return output;
-	}
 	public boolean scanningUsingJStokenizer(String path) {
+		
 		Path procFilePath = null;
 
 		procFilePath = Paths.get(path);
@@ -166,6 +142,7 @@ public class cOfuscator implements generalOfuscator {
 			taskPath = Paths.get(procFilePath.getParent().toString() + "/task_" + procFilePath.getFileName().toString());
 
 			String[] pah = pathSet(procFilePath, taskPath);
+			permission(Paths.get(pah[0]));
 			ProcessBuilder pb = new ProcessBuilder(pah);
 			
 			pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
@@ -184,15 +161,18 @@ public class cOfuscator implements generalOfuscator {
 			proc.destroy();
 			return false;
 		} finally {
-			
-		
 			proc.destroy();
-
 		}
 		return true;
 	}
 
-	
+	private void permission(Path p) {
+		File file = p.toFile();
+		file.setReadable(true);
+		file.setExecutable(true);
+		file.setWritable(true);
+		
+	}
 	
 	/**
 	 * 토큰 파일 읽고 map push
@@ -226,13 +206,6 @@ public class cOfuscator implements generalOfuscator {
 		return true;
 	}
 	
-
-
-
-	@Override
-	public String readString() {
-		return null;
-	}
 
 	@Override
 	public void valueZipping(Path from, Path to, boolean f) {
@@ -355,7 +328,7 @@ public class cOfuscator implements generalOfuscator {
 							arraySize = rnd.nextInt(maxHold);
 						}
 						
-						boolean[] flag = getSecureIdx(text.length(), arraySize);
+						boolean[] flag = Supporter.getSecureIdx(text.length(), arraySize);
 						HashSet<String> rndMap = new HashSet<String>();
 						
 						// start define ____ (d1,e3,a,d2,c,e)
@@ -364,7 +337,7 @@ public class cOfuscator implements generalOfuscator {
 						// put random string
 						while(cnt++ < arraySize) {
 							int overlab = 0;
-							String ch = getRandomChar();
+							String ch = Supporter.getRandomChar();
 							if(rndMap.contains(ch)) {
 								while(rndMap.contains(ch + overlab)) {
 									overlab++;
@@ -376,7 +349,7 @@ public class cOfuscator implements generalOfuscator {
 						}
 						
 						String[] arr = rndMap.toArray(new String[rndMap.size()]);
-						shuffleArray(arr);		// suffling
+						Supporter.shuffleArray(arr);		// suffling
 					
 						// appending & indexsing
 						replaceTokenBuilder.append(arr[0]);
@@ -387,7 +360,7 @@ public class cOfuscator implements generalOfuscator {
 						String[] sarr = arr.clone();
 						int[] idxArr = new int[arraySize];
 						Arrays.fill(idxArr, -1);
-						shuffleArray(sarr);		// suffling2
+						Supporter.shuffleArray(sarr);		// suffling2
 						int firstPointer = 0;
 						while(!flag[firstPointer]) firstPointer++;
 
@@ -417,7 +390,7 @@ public class cOfuscator implements generalOfuscator {
 					int[] replIdx = convertMap.get(replacedString);
 					textBuilder.append(replacedString).append('(');
 					if(replIdx[0] == -1) {
-						textBuilder.append(getRandomChar());
+						textBuilder.append(Supporter.getRandomChar());
 					}
 					else {
 						textBuilder.append(text.charAt(replIdx[0]));
@@ -425,7 +398,7 @@ public class cOfuscator implements generalOfuscator {
 					
 					for(int i = 1; i < replIdx.length; i++) {
 						if(replIdx[i] == -1) {
-							textBuilder.append(',').append(getRandomChar());
+							textBuilder.append(',').append(Supporter.getRandomChar());
 						}
 						else {
 							textBuilder.append(',').append(text.charAt(replIdx[i]));
@@ -437,7 +410,6 @@ public class cOfuscator implements generalOfuscator {
 
 			}
 			
-			// 그냥 sb하나 더 생성해서 따로따로 write?? 
 			if(f) {
 				System.out.println(replaceTokenBuilder.append('\n').append(textBuilder).toString());
 			}
@@ -453,40 +425,9 @@ public class cOfuscator implements generalOfuscator {
 
 	}
 	
-	private static void shuffleArray(String[] ar) {
-		Random rnd = ThreadLocalRandom.current();
-		for (int i = ar.length - 1; i > 0; i--) {
-			int index = rnd.nextInt(i + 1);
-			String a = ar[index];
-			ar[index] = ar[i];
-			ar[i] = a;
-		}
-	}
-	
-	private boolean[] getSecureIdx(int length, int maxHold) {
-		Random rnd = new Random();
-		int cnt = 0;
-		boolean[] b = new boolean[maxHold];
-		while(cnt < length) {
-			int idx = rnd.nextInt(maxHold);
-			if(!b[idx]) {
-				b[idx] = true;
-				cnt++;
-			}
-		}
-		return b;
-	}
-	
-	private String getRandomChar() {
-		Random rnd = new Random();
-	    int v = rnd.nextInt(52); // or use Random or whatever
-	    char base = (v < 26) ? 'A' : 'a';
-	    return String.valueOf(((char) (base + v % 26)));
-	}
 
 	@Override
 	public void getConvertSet() {
-		// iterator 로 변환 필요
 		ArrayList<TokenStruct> rmlist = new ArrayList<TokenStruct>();
 		Iterator<Entry<TokenStruct, String>> iter = filterMap.entrySet().iterator();
 		while (iter.hasNext()) {
@@ -508,7 +449,6 @@ public class cOfuscator implements generalOfuscator {
 			if(convertMap.containsKey("_".repeat(offset))) {
 				offset++;
 			}
-
 			
 			convertMap.put("_".repeat(offset), null);
 			filterMap.put(k, "_".repeat(offset));
