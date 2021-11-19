@@ -61,7 +61,6 @@ public class cObfuscator implements generalObfuscator {
 	private static final String WHITE_TYPE = "whitespace";
 	private static final String COMMA_TYPE = ",";
 	private static final String SEMI_TYPE = ";";
-	private static final String EQUAL_TYPE = "=";
 	private static final String SPLITTER = "( afsjevijow42f2f3315fljksf=> )";
 
 	
@@ -273,9 +272,9 @@ public class cObfuscator implements generalObfuscator {
 					textBuilder.append("0x").append(new BigInteger(text).toString(16)).append(' '); break;
 				case CHAR_TYPE :
 					text = text.replace("\"", "");
+					text = text.replace("\\\\", "\\");
+					System.out.println(text);
 					textBuilder.append(text).append(' '); break;
-//					String cc = text.replaceAll("'", "");
-	//				textBuilder.append("0x").append(new BigInteger(cc).toString(16)).append(' '); break;
 				case STRING_TYPE :
 					text = text.substring(1, text.length() - 1);
 					text = text.replace("\\\\", "\\");
