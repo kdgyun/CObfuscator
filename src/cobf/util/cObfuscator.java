@@ -273,7 +273,7 @@ public class cObfuscator implements generalObfuscator {
 				case CHAR_TYPE :
 					text = text.replace("\"", "");
 					text = text.replace("\\\\", "\\");
-					System.out.println(text);
+//					System.out.println(text);
 					textBuilder.append(text).append(' '); break;
 				case STRING_TYPE :
 					text = text.substring(1, text.length() - 1);
