@@ -61,6 +61,7 @@ public class cObfuscator implements generalObfuscator {
 	private static final String WHITE_TYPE = "whitespace";
 	private static final String COMMA_TYPE = ",";
 	private static final String SEMI_TYPE = ";";
+	private static final String EQUAL_TYPE = "=";
 	private static final String SPLITTER = "( afsjevijow42f2f3315fljksf=> )";
 
 	
@@ -234,6 +235,7 @@ public class cObfuscator implements generalObfuscator {
 			final String close3 = "_".repeat(offset++);
 			final String semi = "_".repeat(offset++);
 			final String comma = "_".repeat(offset++);
+			final String equal = "_".repeat(offset++);
 			final String define = "# define ";
 			HashSet<String> operSet = new HashSet<String>();
 			replaceTokenBuilder.append(define).append(strPre).append("(x) #x").append('\n');
@@ -246,6 +248,7 @@ public class cObfuscator implements generalObfuscator {
 			replaceTokenBuilder.append(define).append(close3).append(" ]").append('\n');
 			replaceTokenBuilder.append(define).append(semi).append(" ;").append('\n');
 			replaceTokenBuilder.append(define).append(comma).append(" ,").append('\n');
+			replaceTokenBuilder.append(define).append(equal).append(" =").append('\n');
 			String[] spl;
 			for(String line : lines) {
 				spl = line.split(SPLITTER, 2);
@@ -300,6 +303,10 @@ public class cObfuscator implements generalObfuscator {
 					}
 					if(text.equals(SEMI_TYPE)) {
 						textBuilder.append(semi).append(' ');
+						break;
+					}
+					if(text.equals(EQUAL_TYPE)) {
+						textBuilder.append(equal).append(' ');
 						break;
 					}
 					if(operSet.add(text)) {	// 새로 추가 될 경우
