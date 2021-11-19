@@ -2,7 +2,7 @@
 PATH=/bin:/usr/bin:/usr/local/bin:$PATH
 DIR="$( cd "$( dirname "$0" )" && pwd -P )"
 
-if [ ! -d src/cobf/js/c-tokenizer/node_modules ] ; then
+if [ ! -d {DIR}/js/c-tokenizer/node_modules ] ; then
  npm ci --prefix ${DIR}/js/c-tokenizer
 fi
 

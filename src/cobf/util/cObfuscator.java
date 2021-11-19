@@ -273,8 +273,9 @@ public class cObfuscator implements generalObfuscator {
 					textBuilder.append("0x").append(new BigInteger(text).toString(16)).append(' '); break;
 				case CHAR_TYPE :
 					text = text.replace("\"", "");
-					String cc = text.replaceAll("'", "");
-					textBuilder.append("0x").append(new BigInteger(cc).toString(16)).append(' '); break;
+					textBuilder.append(text).append(' '); break;
+//					String cc = text.replaceAll("'", "");
+	//				textBuilder.append("0x").append(new BigInteger(cc).toString(16)).append(' '); break;
 				case STRING_TYPE :
 					text = text.substring(1, text.length() - 1);
 					text = text.replace("\\\\", "\\");
@@ -302,10 +303,7 @@ public class cObfuscator implements generalObfuscator {
 						textBuilder.append(semi).append(' ');
 						break;
 					}
-					if(text.equals(EQUAL_TYPE)) {
-						textBuilder.append(equal).append(' ');
-						break;
-					}
+
 					if(operSet.add(text)) {	// 새로 추가 될 경우
 						replaceTokenBuilder.append(define).append(replacedString).append(" " + operPre + "(" + text + ")\n");
 					}
