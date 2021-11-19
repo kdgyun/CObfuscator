@@ -1,5 +1,6 @@
 package cobf.util;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -22,7 +23,13 @@ import java.util.stream.Stream;
 import cobf.TOKEN.TOKEN;
 import cobf.util.support.Supporter;
 
-
+/**
+ * 
+ * @author kdgyun
+ * @since 1.0.0
+ * @version 1.0.0
+ * 
+ */
 
 public class cObfuscator implements generalObfuscator {
 

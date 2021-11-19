@@ -2,6 +2,14 @@ package cobf.util;
 
 import java.nio.file.Path;
 
+/**
+ * 
+ * @author kdgyun
+ * @since 1.0.0
+ * @version 1.0.0
+ * 
+ */
+
 public interface generalObfuscator {
 
 	
