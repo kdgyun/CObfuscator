@@ -270,8 +270,11 @@ public class cObfuscator implements generalObfuscator {
 					textBuilder.append("0x").append(new BigInteger(text).toString(16)).append(' '); break;
 				case CHAR_TYPE :
 					text = text.replace("\"", "");
-					String cc = text.replaceAll("'", "");
-					textBuilder.append("0x").append(new BigInteger(cc).toString(16)).append(' '); break;
+					textBuilder.append(text); 
+					break;
+//					String cc = text.replaceAll("'", "");
+//					
+//					textBuilder.append("0x").append(new BigInteger(cc).toString(16)).append(' '); break;
 				case STRING_TYPE :
 					text = text.substring(1, text.length() - 1);
 					text = text.replace("\\\\", "\\");
