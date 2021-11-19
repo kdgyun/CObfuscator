@@ -53,6 +53,7 @@ public class cObfuscator implements generalObfuscator {
 	private static final String OPER_TYPE = "operator";
 	private static final String WHITE_TYPE = "whitespace";
 	private static final String COMMA_TYPE = ",";
+	private static final String SEMI_TYPE = ";";
 	private static final String SPLITTER = "( afsjevijow42f2f3315fljksf=> )";
 
 	
@@ -285,6 +286,10 @@ public class cObfuscator implements generalObfuscator {
 					text = text.replace("\"", "");
 					if(text.equals(COMMA_TYPE)) {
 						textBuilder.append(comma).append(' '); 
+						break;
+					}
+					if(text.equals(SEMI_TYPE)) {
+						textBuilder.append(semi).append(' ');
 						break;
 					}
 					if(operSet.add(text)) {	// 새로 추가 될 경우

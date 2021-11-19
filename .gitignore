@@ -4,8 +4,9 @@
 /.DS_Store
 .DS_Store
 
-# Created by https://www.toptal.com/developers/gitignore/api/macos,java,node,eclipse
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,java,node,eclipse
+
+# Created by https://www.toptal.com/developers/gitignore/api/node,java,eclipse,macos
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,java,eclipse,macos
 
 ### Eclipse ###
 .metadata
@@ -167,7 +168,9 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
-
+# Dependency directories
+node_modules/
+jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -254,4 +257,4 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,java,node,eclipse
+# End of https://www.toptal.com/developers/gitignore/api/node,java,eclipse,macos
