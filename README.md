@@ -33,10 +33,72 @@ Project
 
 
 </br></br>
-installing node.js : (https://nodejs.org/ko/)
+installing node.js : (https://nodejs.org/)
 
 
 <br/><br/>
+
+-----------------
+
+
+
+
+## Usage (COMMON OPTION)
+
+<br/>
+
+**CLI common option**
+```css
+java conf/util/runner [input file path] [output file path] <option>
+```
+<br/><br/>
+
+**conf/util/runner** : The execution location of the main file(.class). <br/>
+**input file path** : Relative path or absolute path of the file to be converted from the current directory location.<br/>
+**output file path** : Relative path or absolute path of the resulting file from the current directory location. (make new file in run)<br/><br/>
+
+
+
+
+
+**\<option>**<br/>
+For printing to colsole, set the --p or --P flag
+```Ruby
+java conf/util/runner workspace/hello/main.c  workspace/hello/conv_main.c --P
+```
+<br/>
+
+For  getting output result to file, set the --f or --F flag <br/>
+```Ruby
+--f / --F : get output result to file
+```
+<br/><br/>
+
+
+
+If the input file path is not specified, it will run as a built-in test file.
+```Ruby
+#default input
+java conf/util/runner    
+#(equals : java CObfuscator/src/cobf/test/inputFile/main.c --p)
+
+java conf/util/runner --f    
+#(equals : java CObfuscator/src/cobf/test/inputFile/main.c CObfuscator/src/cobf/test/outputFile/Obfmain.c --F)
+```
+
+If the option is --F and output file path is not specified, it will created file with a name that combines "Obf" and the input file name in a directory such as an input file.
+```Ruby
+#default input
+java conf/util/runner ../work/hello/world.c --p 
+(equals : java ../work/hello/world.c --p )
+
+java conf/util/runner ../work/hello/world.c --f
+(equals : java ../work/hello/world.c ../work/hello/Obfworld.c --F )
+```
+
+
+
+
 
 -----------------
 
