@@ -113,7 +113,7 @@ public class runner {
 
 			} else if (args.length == 2) {
 				if (option == null) {
-					complete = new cObfuscator().run(p1, p2, true);
+					complete = new cObfuscator().run(p1, p2, false);
 				} else {
 
 					if (isPrint) {
