@@ -174,7 +174,7 @@ java conf/util/runner [input file path] [output file path] <option>
 <br/>
 
 **1. Download** <br /> <br /> 
-download jar : (https://github.com/kdgyun/CObfuscator/releases/download/v1.0.3/CObfuscator.jar)
+download jar : (https://github.com/kdgyun/CObfuscator/releases/download/v1.0.4/CObfuscator.jar)
 
 <br /><br />
 
@@ -218,7 +218,7 @@ java conf/util/runner [input file path] [output file path] <option>
 <br/>
 
 **1. Download** <br /> <br /> 
-download jar : (https://github.com/kdgyun/CObfuscator/releases/download/v1.0.3/CObfuscator.jar)
+download jar : (https://github.com/kdgyun/CObfuscator/releases/download/v1.0.4/CObfuscator.jar)
 
 <br /><br />
 
