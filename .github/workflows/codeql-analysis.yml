@@ -71,8 +71,8 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Build 
-      run: javac src/**/*.java
-      working-directory: ./temp/home/runner/work/CObfuscator/
+    - name: pwd
+      run: pwd
+ 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
