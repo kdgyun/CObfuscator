@@ -67,7 +67,8 @@ jobs:
 
     - if: matrix.language == 'java' 
       name: Build Java
-      uses: github/codeql-action/autobuild@v1
+      run: javac cobf/**/*.java
+      working-directory: ./CObfuscator
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
