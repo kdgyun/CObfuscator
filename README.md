@@ -30,6 +30,7 @@ Project
 > - Java11 API : [Java API](https://docs.oracle.com/en/java/javase/11/docs/api/index.html)
 > - node.js 와 npm을 사용합니다. node.js 설치를 할 경우 대부분 자동으로 PATH를 잡아주지만, 간혹 안되는 경우도 있으니 환경변수는 필히 확인하고 설정해주셔야 합니다. 
 > - UNIX 계열 OS에 최적화되어있습니다. (추후 OS 확장 예정)
+> - input에 주어지는 filename의 확장자는 .c .cpp .cc 이 들어올 수 있습니다.
 
 
 </br></br>
@@ -62,28 +63,44 @@ java conf/util/runner [input file path] [output file path] <option>
 
 
 **\<option>**<br/>
-For printing to colsole, set the --p or --P flag
+For printing to colsole, set the --p or --P flag (P/p means print option) <br/>
 ```Ruby
 java conf/util/runner workspace/hello/main.c  workspace/hello/conv_main.c --P
 ```
 <br/>
 
-For  getting output result to file, set the --f or --F flag <br/>
+For  getting output result to file, set the --f or --F flag (F/f means make file option)<br/>
 ```Ruby
 --f / --F : get output result to file
 ```
+<br/><br/><br/>
+
+### Notice
+
+<br/>
+
+If the output file path is specified, the default option is given as the --F flag.
+```Ruby
+java ../work/hello/world.c ../work/hello/Obfworld.c
+#(same this : java ../work/hello/world.c ../work/hello/world2.c --F)
+```
 <br/><br/>
 
-
+on the other hand, If the output file path is not specified, the default option is given as the --P flag.
+```Ruby
+java ../work/hello/world.c   
+#(same this : java ../work/hello/world.c --p)
+```
+<br/><br/>
 
 If the input file path is not specified, it will run as a built-in test file.
 ```Ruby
 #default input
 java conf/util/runner    
-#(equals : java CObfuscator/src/cobf/test/inputFile/main.c --p)
+#(same this : java CObfuscator/src/cobf/test/inputFile/main.c --p)
 
 java conf/util/runner --f    
-#(equals : java CObfuscator/src/cobf/test/inputFile/main.c CObfuscator/src/cobf/test/outputFile/Obfmain.c --F)
+#(same this : java CObfuscator/src/cobf/test/inputFile/main.c CObfuscator/src/cobf/test/outputFile/Obfmain.c --F)
 ```
 <br/><br/>
 
@@ -91,10 +108,10 @@ If the option is --F and output file path is not specified, it will created file
 ```Ruby
 #default input
 java conf/util/runner ../work/hello/world.c --p 
-(equals : java ../work/hello/world.c --p )
+(same this : java ../work/hello/world.c --p )
 
 java conf/util/runner ../work/hello/world.c --f
-(equals : java ../work/hello/world.c ../work/hello/Obfworld.c --F )
+(same this : java ../work/hello/world.c ../work/hello/Obfworld.c --F )
 ```
 
 <br/><br/><br/><br/>
@@ -255,5 +272,17 @@ public class test {
 ```
 
 
+<br /><br /><br />
 
 
+
+-----------------
+
+<br />
+
+## License
+
+<br /><br />
+
+Apache License 2.0
+<br /><br />
