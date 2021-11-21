@@ -1,7 +1,9 @@
 
 <br/>
 
-<img src= "https://img.shields.io/badge/Java-v11.0.5-blue&?logo=Java&color=blue"/> <img src= "https://img.shields.io/badge/node.js-v16.13.0-339933&?logo=Node.js&color=339933"/> <img src= "https://img.shields.io/badge/npm-v8.1.0-CB3837&?logo=npm&color=CB3837"/>
+<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/kdgyun/CObfuscator"> <a href="https://github.com/kdgyun/CObfuscator/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/kdgyun/CObfuscator"></a> 
+
+<img src= "https://img.shields.io/badge/Java-v11.0.5-blue&?logo=Java&color=blue"/> <img src= "https://img.shields.io/badge/node.js-v16.13.0-339933&?logo=Node.js&color=339933"/>  <img src= "https://img.shields.io/badge/npm-v8.1.0-CB3837&?logo=npm&color=CB3837"/> <a href="https://github.com/kdgyun/CObfuscator/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/kdgyun/CObfuscator"></a> ![example branch parameter](https://github.com/kdgyun/CObfuscator/actions/workflows/codeql-analysis.yml/badge.svg?branch=master) 
 
 
 <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fkdgyun%2FCObfuscator&count_bg=%23ED8282&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" align="right"/></a>
