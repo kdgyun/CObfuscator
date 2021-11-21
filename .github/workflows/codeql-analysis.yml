@@ -68,10 +68,10 @@ jobs:
     - if: matrix.language == 'java' 
       name: Set up
       run : | 
-        ls -a
         tree
-        javac ./src/**/*.java
-        cd src
+        find -name "*.java" > source.txt
+        javac -d bin @source.txt
+        cd bin
  
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
