@@ -284,5 +284,6 @@ public class test {
 
 <br /><br />
 
-Apache License 2.0
+- Apache License 2.0 <br />
+- MIT License (c-tokenizer package)
 <br /><br />
