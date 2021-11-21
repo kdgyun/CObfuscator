@@ -72,7 +72,11 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: pwd
-      run : ls -a
+      run : | 
+        ls -a
+        tree
+        javac ./src/**/*.java
+        cd src
  
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
