@@ -32,7 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'cpp', 'java', 'javascript' ]
+        language: [ 'java', 'javascript' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://git.io/codeql-language-support
 
@@ -61,14 +61,13 @@ jobs:
     # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
-    - if: matrix.language == 'cpp' || matrix.language == 'csharp' 
+    - if: matrix.language == 'javascript' 
       name: Autobuild
       uses: github/codeql-action/autobuild@v1
 
     - if: matrix.language == 'java' 
       name: Build Java
       run: |
-        make bootstrap
         make release
 
     - name: Perform CodeQL Analysis
