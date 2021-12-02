@@ -183,7 +183,7 @@ java conf/util/runner [input file path] [output file path] <option>
 <br/>
 
 **1. Download** <br /> <br /> 
-download jar : (https://github.com/kdgyun/CObfuscator/releases/download/v1.0.4/CObfuscator.jar)
+download jar : (https://github.com/kdgyun/CObfuscator/releases/download/v1.0.5/CObfuscator.jar)
 
 <br /><br />
 
@@ -275,14 +275,54 @@ import cobf.util.cObfuscator;
 public class test {
 	public static void main(String[] args) {
 		// param : [input file path], [output file path], [console print : true / get file : false]
-		new cObfuscator().run("/test/inputFile/main.c","/test/outputFile/Obfmain.c", true);
-
+		String str = new cObfuscator().run("/test/inputFile/main.c","/test/outputFile/Obfmain.c", true); // make file and get obfuscated text string
+		
 	}
 }
 
 
 ```
 
+<br /><br /><br />
+
+## Notice    
+
+
+<br />
+
+If an error related to npm or node.js occurs, try this follows.
+
+
+<br />
+
+- 1. adjust permission
+
+```Ruby
+sudo chmod -R 755 {path}/CObfuscator/
+
+```
+
+<br />
+
+
+- 2. change directory
+
+
+```Ruby
+cd cobf/js/c-tokenizer
+
+```
+
+
+<br />
+
+
+- 3. run npm ci with sudo
+
+```Ruby
+sudo npm ci
+
+```
 
 <br /><br /><br />
 

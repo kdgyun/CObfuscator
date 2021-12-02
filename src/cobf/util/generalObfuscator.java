@@ -21,7 +21,7 @@ import java.nio.file.Path;
  * 
  * @author kdgyun
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.5
  * 
  */
 
@@ -34,9 +34,9 @@ public interface generalObfuscator {
 	 * @param path input File Path
 	 * @param resultPath output File Path
 	 * @param f true 일 경우 console print, false 일 경우 outputFilePath 로 주어지는 Path로 write
-	 * @return 모두 완료되었을 경우 true
+	 * @return 모두 완료되었을 경우 해당 난독화 코드 출력
 	 */
-	boolean run(String path, String resultPath, boolean f);
+	String run(String path, String resultPath, boolean f);
 	
 	
 	
@@ -55,7 +55,7 @@ public interface generalObfuscator {
 	 * @param to obfuscator에 의해 난독화 되어 write 될 file Path
 	 * @param f true 일 경우 console print, false 일 경우 outputFilePath 로 주어지는 Path로 write
 	 */
-	void valueZipping(Path from, Path to, boolean f);
+	String valueZipping(Path from, Path to, boolean f);
 	
 	/**
 	 * 변환기 

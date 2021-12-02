@@ -28,7 +28,7 @@ import java.util.LinkedHashSet;
  * 
  * @author kdgyun
  * @since 1.0.0
- * @version 1.0.4
+ * @version 1.0.5
  * 
  */
 
@@ -47,9 +47,10 @@ public class runner {
 		Path path = Paths.get(new runner().getClass().getClassLoader().getResource("cobf").getPath());
 
 		boolean isPrint = false;
-		boolean complete = false;
+		String complete = null;
 		if (args == null || args.length == 0) {
 			complete = new cObfuscator().run(path + "/test/inputFile/main.c", path + "/test/outputFile/Obfmain.c", true);
+			System.out.println(complete);
 		} else {
 			if (args.length > 3) {
 				throw new IllegalArgumentException("IllegalArguments");
@@ -117,6 +118,7 @@ public class runner {
 					if (isPrint) {
 						complete = new cObfuscator().run(path + "/test/inputFile/main.c",
 								path + "/test/outputFile/Obfmain.c", true);
+						System.out.println(complete);
 
 					} else {
 						complete = new cObfuscator().run(path + "/test/inputFile/main.c",
@@ -125,6 +127,7 @@ public class runner {
 				} else {
 					Path p = Paths.get(p1);
 					complete = new cObfuscator().run(p1, p.getParent() + "/Obf" + p.getFileName(), true);
+					System.out.println(complete);
 				}
 
 			} else if (args.length == 2) {
@@ -135,6 +138,7 @@ public class runner {
 					if (isPrint) {
 						Path p = Paths.get(p1);
 						complete = new cObfuscator().run(p1, p.getParent() + "/Obf" + p.getFileName(), true);
+						System.out.println(complete);
 					} else {
 						Path p = Paths.get(p1);
 						complete = new cObfuscator().run(p1, p.getParent() + "/Obf" + p.getFileName(), false);
@@ -143,6 +147,7 @@ public class runner {
 			} else if (args.length == 3) {
 				if (isPrint) {
 					complete = new cObfuscator().run(p1, p2, true);
+					System.out.println(complete);
 				} else {
 					complete = new cObfuscator().run(p1, p2, false);
 
@@ -151,7 +156,7 @@ public class runner {
 				throw new IllegalArgumentException("Not a valid argument : too may arguments");
 			}
 		}
-		if (complete) {
+		if (complete != null) {
 			System.out.println("\n\nComplete and Finishing");
 		} else {
 			System.out.println("\n\nFinishing an Incomplete");

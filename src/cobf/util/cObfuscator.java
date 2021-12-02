@@ -20,6 +20,7 @@ package cobf.util;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +44,7 @@ import cobf.util.support.Supporter;
  * 
  * @author kdgyun
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.5
  * 
  */
 
@@ -77,6 +78,9 @@ public class cObfuscator implements generalObfuscator {
 	private static final String WHITE_TYPE = "whitespace";
 	private static final String COMMA_TYPE = ",";
 	private static final String SEMI_TYPE = ";";
+	private static final String EQUAL_TYPE = "=";
+	private static final String BANG = "!";
+	private static final String BANGEQUALS = "!=";
 	private static final String SPLITTER = "( afsjevijow42f2f3315fljksf=> )";
 
 	
@@ -123,30 +127,26 @@ public class cObfuscator implements generalObfuscator {
 	private static Path taskPath = null;
 	
 	@Override
-	public boolean run(String path, String resultPath, boolean f) {
+	public String run(String path, String resultPath, boolean f) {
+		System.out.println(path);
+		
 		if (!scanningUsingJStokenizer(path)) {
 			System.out.println("scanningUsingJStokenizer is failed");
-			return false;
+			return null;
 		}
 		if(!readAllTokensUsingJS(taskPath)) {
 			System.out.println("readAllTokensUsingJS is failed");
-			return false;
+			return null;
 		}
 		getConvertSet();
-		valueZipping(taskPath, Paths.get(resultPath), f);
-		new File(taskPath.toString()).deleteOnExit();
-	
-		return true;
+		String text = valueZipping(taskPath, Paths.get(resultPath), f);
+		new File(taskPath.toString()).delete();
+		return text;
 	}
 
 	
 	private String[] pathSet(Path filePath1, Path filePath2) {
-		Path p = Paths.get(ClassLoader.getSystemClassLoader().getResource(".").getPath());
-
-		if(p.getFileName().toString().equals("bin")) {p = p.getParent();}
-		if(!p.getFileName().toString().equals("CObfuscator")) {p = Paths.get(p + "/CObfuscator");}
-		
-		p = Paths.get(getClass().getClassLoader().getResource("cobf/run.sh").getPath());
+		Path p = Paths.get(getClass().getClassLoader().getResource("cobf/run.sh").getPath());
 		return new String[] {p.toString(),  filePath1.toString() , filePath2.toString()};
 
 	}
@@ -157,7 +157,7 @@ public class cObfuscator implements generalObfuscator {
 	public boolean scanningUsingJStokenizer(String path) {
 		
 		Path procFilePath = null;
-
+		
 		procFilePath = Paths.get(path);
 		if (procFilePath == null)
 			return false;
@@ -232,7 +232,7 @@ public class cObfuscator implements generalObfuscator {
 	
 
 	@Override
-	public void valueZipping(Path from, Path to, boolean f) {
+	public String valueZipping(Path from, Path to, boolean f) {
 		Path sourceFilePath = from;
 		Path newFilePath = to;
 		try {
@@ -285,11 +285,21 @@ public class cObfuscator implements generalObfuscator {
 					break;
 				case NUMBER_TYPE :
 					text = text.replace("\"", "");
-					textBuilder.append("0x").append(new BigInteger(text).toString(16)).append(' '); break;
+					if(text.contains(".") || text.contains("f")) {
+						textBuilder.append(text).append(' ');
+						break;
+					}
+					if(text.charAt(0) == '-') {
+						textBuilder.append("-");
+						text = text.substring(1);
+					}
+					int len = new BigInteger(text).toString(16).length();
+					int rep = 16 - len;
+					textBuilder.append("0x").append("0".repeat(rep)).append(new BigInteger(text).toString(16)).append(' '); break;
 				case CHAR_TYPE :
 					text = text.replace("\"", "");
 					text = text.replace("\\\\", "\\");
-//					System.out.println(text);
+
 					textBuilder.append(text).append(' '); break;
 				case STRING_TYPE :
 					text = text.substring(1, text.length() - 1);
@@ -301,8 +311,22 @@ public class cObfuscator implements generalObfuscator {
 					if(replacedString == null) break;
 					if(convertMap.get(replacedString) == null)	{ // token이 define 되지 않은 상태일 경우
 					// # define ____ _____(stringv)
-						replaceTokenBuilder.append(define).append(replacedString).append(" " + strPre).append("(" + text + ")\n");
-						convertMap.put(replacedString, new int[]{});
+						replaceTokenBuilder.append(define).append(replacedString).append(" " + strPre).append("(");
+						URLEncoder.encode(text ,"UTF-8");
+
+						for(int i = 0; i < text.length();) {
+							int p = (int)text.charAt(i);
+
+							if(p < 160) {
+								replaceTokenBuilder.append("\\").append(Integer.toOctalString(p));
+							}
+							else {
+								replaceTokenBuilder.append(String.format("\\u%04X", text.codePointAt(i)));
+								
+							}
+							i += Character.charCount(p);
+						}
+						replaceTokenBuilder.append(")\n");
 					}
 					
 					// ____(stringv) 
@@ -316,6 +340,17 @@ public class cObfuscator implements generalObfuscator {
 					}
 					if(text.equals(SEMI_TYPE)) {
 						textBuilder.append(semi).append(' ');
+						break;
+					}if(text.equals(EQUAL_TYPE)) {
+						textBuilder.append("=").append(' ');
+						break;
+					}
+					if(text.equals(BANGEQUALS)) {
+						textBuilder.append(BANGEQUALS).append(' ');
+						break;
+					}
+					if(text.equals(BANG)) {
+						textBuilder.append(BANG);
 						break;
 					}
 
@@ -443,16 +478,19 @@ public class cObfuscator implements generalObfuscator {
 			}
 			
 			if(f) {
-				System.out.println(replaceTokenBuilder.append('\n').append(textBuilder).toString());
+				return replaceTokenBuilder.append('\n').append(textBuilder).toString();
+				//System.out.println(replaceTokenBuilder.append('\n').append(textBuilder).toString());
 			}
 			else {
 				Files.writeString(newFilePath, replaceTokenBuilder.append('\n').append(textBuilder), StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
 					StandardOpenOption.TRUNCATE_EXISTING);
+				return replaceTokenBuilder.append('\n').append(textBuilder).toString();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
-
+		
 	
 
 	}
