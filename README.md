@@ -285,7 +285,16 @@ public class test {
 
 <br /><br /><br />
 
-## Notice    
+## Troubleshooting    
+
+
+<br />
+
+This secsion lists solutions to problems you might encounter with CObfuscator. 
+
+<br /><br />
+
+### \[ Common Problems ] <br />
 
 
 <br />
